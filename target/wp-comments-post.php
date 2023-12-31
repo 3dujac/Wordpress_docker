@@ -35,7 +35,7 @@ if ( is_wp_error( $comment ) ) {
 $user = wp_get_current_user();
 $cookies_consent = ( isset( $_POST['wp-comment-cookies-consent'] ) );
 
-/**
+/**-----
  * Perform other actions when comment cookies are set.
  *
  * @since 3.4.0
