@@ -1,2 +1,2 @@
 # Wordpress in docker with  github actions
-Wordpress dockerizado para trabjar en local
+Wordpress dockerizado para trabajar en local
