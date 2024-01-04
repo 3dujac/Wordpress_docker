@@ -13,7 +13,7 @@ jobs:
       - name: Run Docker Compose
         run:  docker-compose up -d
    
-    #  - uses: actions/checkout@v4
+    #  - uses: actions/checkout@v4.
     #  - name: Build the stack
     #    run: docker-compose up -d
     #  - name: Test
