@@ -23,75 +23,75 @@ services:
         ports:
             - 8080:80
     # KIBANA SIN VOLUMENES
-    # elasticsearch:
-    #     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.4
-    #     environment:
-    #     - discovery.type=single-node
-    #     ports:
-    #     - 9200:9200
-    #     - 9300:9300
-    # logstash:
-    #     image: docker.elastic.co/logstash/logstash:8.11.4
-    #     ports:
-    #     - 5000:5000
-    # kibana:
-    #     image: docker.elastic.co/kibana/kibana:8.11.4
-    #     ports:
-    #     - 5601:5601
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.4
+        environment:
+        - discovery.type=single-node
+        ports:
+        - 9200:9200
+        - 9300:9300
+    logstash:
+        image: docker.elastic.co/logstash/logstash:8.11.4
+        ports:
+        - 5000:5000
+    kibana:
+        image: docker.elastic.co/kibana/kibana:8.11.4
+        ports:
+        - 5601:5601
+volumes:
+    data:
     
     #Codigo de clase
-    elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
-        container_name: elasticsearch
-        ports: ["9200:9200"]
-        labels:
-            co.elastic.logs/enabled: false
-        environment:
-            - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
-            - "discovery.type=single-node"
-            - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
-            - "cluster.routing.allocation.disk.threshold_enabled=false"
-            - "TAKE_FILE_OWNERSHIP=1"
-        volumes:
-            - "./var/es_data:/usr/share/elasticsearch/data"
-        healthcheck:
-            test:
-                [
-                    "CMD-SHELL",
-                    "curl --silent --fail localhost:9200/_cluster/health || exit 1",
-                ]
-    kibana:
-        image: docker.elastic.co/kibana/kibana:${TAG}
-        container_name: kibana
-        ports: ["5601:5601"]
-        labels:
-            co.elastic.logs/enabled: false
-        environment:
-            - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
-        depends_on: ["elasticsearch"]
-        healthcheck:
-            test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/"]
+    # elasticsearch:
+    #     image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
+    #     container_name: elasticsearch
+    #     ports: ["9200:9200"]
+    #     labels:
+    #         co.elastic.logs/enabled: false
+    #     environment:
+    #         - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
+    #         - "discovery.type=single-node"
+    #         - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    #         - "cluster.routing.allocation.disk.threshold_enabled=false"
+    #         - "TAKE_FILE_OWNERSHIP=1"
+    #     volumes:
+    #         - "./var/es_data:/usr/share/elasticsearch/data"
+    #     healthcheck:
+    #         test:
+    #             [
+    #                 "CMD-SHELL",
+    #                 "curl --silent --fail localhost:9200/_cluster/health || exit 1",
+    #             ]
+    # kibana:
+    #     image: docker.elastic.co/kibana/kibana:${TAG}
+    #     container_name: kibana
+    #     ports: ["5601:5601"]
+    #     labels:
+    #         co.elastic.logs/enabled: false
+    #     environment:
+    #         - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
+    #     depends_on: ["elasticsearch"]
+    #     healthcheck:
+    #         test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/"]
     
-    filebeat:
-        image: docker.elastic.co/beats/filebeat:${TAG}
-        container_name: filebeat
-        command: --strict.perms=false -e
-        user: root
-        restart: on-failure
-        labels:
-            co.elastic.logs/enabled: false
-        environment:
-            - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
-        volumes:
-            - "./ops/config/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
-            - "./var/filebeat/data:/usr/share/filebeat/data"
-            - "./var/log/mysql:/var/log/mysql"
-            - "/var/lib/docker/containers/:/var/lib/docker/containers/:ro"
-            #- "/home/docker/containers/:/var/lib/docker/containers/:ro" #config for ubuntu with docker installed by snap
-            - "/proc:/hostfs/proc:ro"
-            - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
-            - "/:/hostfs:ro"
-            - "/var/run/docker.sock:/var/run/docker.sock"
-        depends_on: ["elasticsearch", "kibana"] 
-volumes:
-    #data:
+    # filebeat:
+    #     image: docker.elastic.co/beats/filebeat:${TAG}
+    #     container_name: filebeat
+    #     command: --strict.perms=false -e
+    #     user: root
+    #     restart: on-failure
+    #     labels:
+    #         co.elastic.logs/enabled: false
+    #     environment:
+    #         - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
+    #     volumes:
+    #         - "./ops/config/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+    #         - "./var/filebeat/data:/usr/share/filebeat/data"
+    #         - "./var/log/mysql:/var/log/mysql"
+    #         - "/var/lib/docker/containers/:/var/lib/docker/containers/:ro"
+    #         #- "/home/docker/containers/:/var/lib/docker/containers/:ro" #config for ubuntu with docker installed by snap
+    #         - "/proc:/hostfs/proc:ro"
+    #         - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+    #         - "/:/hostfs:ro"
+    #         - "/var/run/docker.sock:/var/run/docker.sock"
+    #     depends_on: ["elasticsearch", "kibana"] 
