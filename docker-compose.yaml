@@ -95,10 +95,10 @@ services:
             - "/:/hostfs:ro"
             - "/var/run/docker.sock:/var/run/docker.sock"
         depends_on: ["elasticsearch", "kibana"]
-volumes:
+#volumes:
     #data:
-    db:
-    web:
-    elasticsearch:
-    kibana:
-    filebeat:
+    #db:
+    # web:
+    # elasticsearch:
+    # kibana:
+    # filebeat:
