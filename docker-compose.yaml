@@ -93,4 +93,5 @@ services:
             - "/:/hostfs:ro"
             - "/var/run/docker.sock:/var/run/docker.sock"
         depends_on: ["elasticsearch", "kibana"] 
-    #data:
+volumes:
+    data:
